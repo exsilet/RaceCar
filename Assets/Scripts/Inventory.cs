@@ -1,0 +1,134 @@
+﻿using System.Collections.Generic;
+using Dreamteck.Splines;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+namespace DefaultNamespace
+{
+    public class Inventory : MonoBehaviour
+    {
+        [SerializeField] private List<GarageSlot> _garageSlots;
+        [SerializeField] private CarLevelUp _carLevelUp;
+        [SerializeField] private SwapNextLevel _nextLevel;
+        [SerializeField] private RandomSpawnCar _spawnCar;
+        
+        private List<Car> _cars = new();
+        private int _count = 0;
+        private GarageSlot _position;
+        private int _randomSlot;
+        private int _maxLevel = 1;
+        
+        public int CurrentMaxLevel => _maxLevel;
+
+        private void Start()
+        {
+            foreach (GarageSlot garageSlot in _garageSlots)
+            {
+                garageSlot.gameObject.SetActive(_count < 2);
+                if (_count < 2)
+                    _count++;
+            }
+        }
+
+        private void OnEnable()
+        {
+            foreach (GarageSlot slot in _garageSlots)
+            {
+                slot.CreateCar += SpawnerOnCreateCar;
+            }
+        }
+
+        private void OnDisable()
+        {
+            foreach (GarageSlot slot in _garageSlots)
+            {
+                slot.CreateCar -= SpawnerOnCreateCar;
+            }
+        }
+
+        public void NewCar(Car car)
+        {
+            _cars.Add(car);
+            
+            for (int i = 0; i < _cars.Count; i++)
+            {
+                if (_cars[i] == null)
+                {
+                    _cars.RemoveAt(i);
+                    _cars.Reverse();
+                }
+            }
+        }
+
+        public void CarBooster(float speed)
+        {
+            foreach (Car carSpeed in _cars)
+            {
+                if (carSpeed != null)
+                {
+                    carSpeed.GetComponent<SplineFollower>().followSpeed *= speed;
+                    carSpeed.SetBooster();
+                }
+            }
+        }
+
+        public void NormalSpeedCar(float speed)
+        {
+            foreach (Car carSpeed in _cars)
+            {
+                if (carSpeed != null)
+                {
+                    if (carSpeed.BoosterSpeed)
+                    {
+                        carSpeed.GetComponent<SplineFollower>().followSpeed /= speed;
+                        carSpeed.SetBoosterFalse();
+                    }
+                }
+            }
+        }
+
+        public GarageSlot RandomSlot()
+        {
+            _randomSlot = Random.Range(0, _count);
+
+            for (int i = 0; i <= _count-1; i++)
+            {
+                Debug.Log(" i " + i);
+
+                if (!_garageSlots[i].InTheGarage)
+                {
+                    Debug.Log(" slot ");
+                    
+                    return _garageSlots[i];
+                }
+            }
+
+            return null;
+        }
+
+        public void MaxLevel(int levelCar, CarStaticData data)
+        {
+            if (_maxLevel < levelCar)
+            {
+                _carLevelUp.gameObject.SetActive(true);
+                _carLevelUp.SetCarLevel(data);
+                _maxLevel = levelCar;
+                _nextLevel.NextCar(data);
+                NewSlot();
+                _spawnCar.SetLevelCar(_maxLevel);
+            }
+        }
+
+        private void NewSlot()
+        {
+            if (_count <= _garageSlots.Count)
+            {
+                _garageSlots[_count].gameObject.SetActive(true);
+                _count++;
+            }
+        }
+
+        private void SpawnerOnCreateCar(GarageSlot position)
+            => _position = position;
+    }
+}
