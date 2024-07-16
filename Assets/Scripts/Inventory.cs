@@ -97,7 +97,7 @@ namespace DefaultNamespace
 
                 if (!_garageSlots[i].InTheGarage)
                 {
-                    Debug.Log(" slot ");
+                    Debug.Log(" slot " + _garageSlots[i]);
                     
                     return _garageSlots[i];
                 }

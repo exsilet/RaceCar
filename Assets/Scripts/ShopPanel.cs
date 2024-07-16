@@ -13,10 +13,9 @@ namespace DefaultNamespace
         [SerializeField] private CarView _carView;
         [SerializeField] private List<CarStaticData> _carStatic;
         [SerializeField] private List<CarViewShop> _viewShopsPrefabs;
-        
+
         private readonly int _defaultMinionsCount = 1;
         private GarageSlot _slot;
-        private int _currentMoney;
         private List<CarViewShop> _viewShops = new List<CarViewShop>();
         private int _maxLevelCar = 1;
         private int _currentLevelCar = 2;
@@ -25,6 +24,11 @@ namespace DefaultNamespace
         {
             CloseCar();
             OpenCar();
+
+            foreach (CarViewShop carViewShop in _viewShops)
+            {
+                carViewShop.SellShopButtonClick += ByuShopCar;
+            }
         }
 
         private void Update()
@@ -39,14 +43,9 @@ namespace DefaultNamespace
                 _viewShops.Add(_viewShopsPrefabs[i]);
                 _viewShopsPrefabs[i].Initialize(_carStatic[i], _carView);
             }
-            
-            foreach (CarViewShop carViewShop in _viewShops)
-            {
-                carViewShop.SellShopButtonClick += ByuShopCar;
-            }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
             foreach (CarViewShop carViewShop in _viewShops)
             {
@@ -56,36 +55,34 @@ namespace DefaultNamespace
 
         private void ByuShopCar(CarStaticData data, CarViewShop view)
         {
-            _slot = _inventory.RandomSlot();
-            _currentMoney = _money.Money;
-
-            if (_currentMoney <= 0)
+            if(data == null)
                 return;
             
+            _slot = _inventory.RandomSlot();
+            
             if (_slot == null)
-            {
                 _panel.gameObject.SetActive(true);
-            }
             else
-            {
                 ByuToCar(data, view);
-            }
         }
 
         private void ByuToCar(CarStaticData data, CarViewShop view)
         {
-            if (_currentMoney >= view.PriceValue)
+            if (_money.Money <= 0)
+                return;
+            
+            if (_money.Money >= view.PriceValue)
             {
                 _money.BuyCar(view.PriceValue);
                 _spawn.SpawnCar(view.CarLevel, _slot);
-                
+
                 if (_maxLevelCar >= _currentLevelCar)
                 {
                     view.SetPrice();
                 }
             }
         }
-        
+
         private void SetLevelCar()
         {
             _maxLevelCar = _inventory.CurrentMaxLevel;
@@ -102,7 +99,7 @@ namespace DefaultNamespace
         private void OpenCar()
         {
             SetLevelCar();
-            
+
             for (int i = 0; i <= _maxLevelCar - _defaultMinionsCount; i++)
             {
                 _viewShopsPrefabs[i].OpenCarView();
