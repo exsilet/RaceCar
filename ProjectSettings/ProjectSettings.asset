@@ -546,7 +546,7 @@ PlayerSettings:
   m_TemplateCustomTags:
     CHOOSE_LOADING_TYPE: 3
     CONFIGURE_SHADOWS_AROUND_CANVAS: 
-    CONNECT_PLUGIN: 
+    CONNECT_PLUGIN: YG1.6.2
     CUSTOMIZE_BARS_BACKGROUND: 
     CUSTOMIZE_LOADING_SCREEN_BACKGROUND: 
     CUSTOMIZE_LOGO: display = "none"
@@ -854,7 +854,7 @@ PlayerSettings:
   webGLPowerPreference: 2
   scriptingDefineSymbols:
     Standalone: DREAMTECK_SPLINES
-    WebGL: DREAMTECK_SPLINES
+    WebGL: DREAMTECK_SPLINES;YG_PLUGIN_YANDEX_GAME;YG_TEXT_MESH_PRO;YG_NEWTONSOFT_FOR_AUTOLOCALIZATION
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}

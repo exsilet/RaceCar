@@ -24,9 +24,10 @@ namespace DefaultNamespace
         {
             foreach (GarageSlot garageSlot in _garageSlots)
             {
-                garageSlot.gameObject.SetActive(_count < 2);
-                if (_count < 2)
-                    _count++;
+                // garageSlot.gameObject.SetActive(_count < 2);
+                // if (_count < 2)
+                //     _count++;
+                garageSlot.gameObject.SetActive(true);
             }
         }
 
@@ -44,6 +45,25 @@ namespace DefaultNamespace
             {
                 slot.CreateCar -= SpawnerOnCreateCar;
             }
+        }
+
+        public GarageSlot RandomSlot()
+        {
+            _randomSlot = Random.Range(0, _garageSlots.Count);
+
+            for (int i = 0; i <= _garageSlots.Count; i++)
+            {
+                Debug.Log(" i " + i);
+
+                if (!_garageSlots[i].InTheGarage)
+                {
+                    Debug.Log(" slot " + _garageSlots[i]);
+                    
+                    return _garageSlots[i];
+                }
+            }
+
+            return null;
         }
 
         public void NewCar(Car car)
@@ -85,25 +105,6 @@ namespace DefaultNamespace
                     }
                 }
             }
-        }
-
-        public GarageSlot RandomSlot()
-        {
-            _randomSlot = Random.Range(0, _count);
-
-            for (int i = 0; i <= _count-1; i++)
-            {
-                Debug.Log(" i " + i);
-
-                if (!_garageSlots[i].InTheGarage)
-                {
-                    Debug.Log(" slot " + _garageSlots[i]);
-                    
-                    return _garageSlots[i];
-                }
-            }
-
-            return null;
         }
 
         public void MaxLevel(int levelCar, CarStaticData data)

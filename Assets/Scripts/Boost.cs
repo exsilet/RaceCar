@@ -1,6 +1,9 @@
-﻿using UIExtensions;
+﻿using System;
+using System.Collections;
+using UIExtensions;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace DefaultNamespace
 {
@@ -8,47 +11,55 @@ namespace DefaultNamespace
     {
         [SerializeField] private Button _button;
         [SerializeField] private Inventory _inventory;
+        [SerializeField] private float _boostDuration;
+        [SerializeField] private float _boosterSpawn;
 
         private bool _isBoosted = false;
-        private float _boostDuration = 20.0f;
-        private float _boostDurationMax = 20.0f;
+        private bool _isCoolingDown = false;
+        private float _boostDurationMax = 30.0f;
         public float _speedMultiplier = 2.0f;
+
+        // private void Start()
+        // {
+        //     _button.Add(Booster);
+        // }
 
         private void Update()
         {
-            if (_isBoosted)
+            if (!_isCoolingDown && _isBoosted)
             {
-                _boostDuration -= Time.deltaTime;
-                if (_boostDuration <= 0.0f)
+                _boostDurationMax -= Time.deltaTime;
+                _button.interactable = false;
+                if (_boostDurationMax <= 0.0f)
                 {
                     _isBoosted = false;
-                    _boostDuration = _boostDurationMax;
+                    _boostDurationMax = _boostDuration;
                     _inventory.NormalSpeedCar(_speedMultiplier);
-                    _button.interactable = true;
+                    StartCoroutine(StartCooldown());
                 }
             }
         }
 
-        private void OnEnable()
-        {
-            _button.Add(Booster);
-        }
-
-        private void OnDisable()
-        {
-            _button.Remove(Booster);
-        }
-
-        private void Booster()
+        public void Booster()
         {
             //добавить рекламу
-            
-            if (!_isBoosted)
+
+            if (!_isBoosted && !_isCoolingDown)
             {
                 _isBoosted = true;
                 _inventory.CarBooster(_speedMultiplier);
-                _button.interactable = false;
             }
+        }
+
+        private IEnumerator StartCooldown()
+        {
+            _isCoolingDown = true;
+            _button.interactable = false;
+
+            yield return new WaitForSeconds(_boosterSpawn);
+
+            _isCoolingDown = false;
+            _button.interactable = true;
         }
     }
 }

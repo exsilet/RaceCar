@@ -14,12 +14,13 @@ namespace DefaultNamespace
         [SerializeField] private Transform _spawnPoint;
         [SerializeField] private Button _button;
         [SerializeField] private Spawn _spawner;
+        [SerializeField] private ParticleSystem _particle;
+        [SerializeField] private float _spawnDuration = 120.0f;
 
         private GarageSlot _slot;
         private int _maxLevelCar = 1;
         private bool _isSpawned = false;
         private int _randomLevelCar;
-        private float _spawnDuration = 60.0f;
         private int _currentMaxLevel = 3;
         private float _timer;
 
@@ -33,22 +34,25 @@ namespace DefaultNamespace
             if (_isSpawned)
             {
                 _timer += Time.deltaTime;
+                _particle.gameObject.SetActive(false);
+                _button.interactable = false;
+                
                 if (_timer >= _spawnDuration)
                 {
                     _isSpawned = false;
+                    _particle.gameObject.SetActive(true);
                     _button.interactable = true;
                 }
             }
         }
 
-        private void OnEnable()
+        public void SpawnRandomCar()
         {
-            _button.Add(SpawnRandomCar);
-        }
+            _timer = 0.0f;
+            _isSpawned = true;
 
-        private void OnDisable()
-        {
-            _button.Remove(SpawnRandomCar);
+            _slot = _inventory.RandomSlot();
+            RandomCar(_slot);
         }
 
         public void SetLevelCar(int maxLevelCar)
@@ -58,19 +62,6 @@ namespace DefaultNamespace
                 _maxLevelCar = _inventory.CurrentMaxLevel;
                 _button.gameObject.SetActive(true);
             }
-        }
-
-        private void SpawnRandomCar()
-        {
-            //добавить рекламу
-            
-            _timer = 0.0f;
-            _isSpawned = true;
-            _button.interactable = false;
-
-            _slot = _inventory.RandomSlot();
-
-            RandomCar(_slot);
         }
 
         private void RandomCar(GarageSlot slot)
