@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _imageSlot: {fileID: 4344031830011097908}
+  _saveLoad: {fileID: 3238672221637823895, guid: 9c518e3c29d4c7a4d97a90b0c9d83c17, type: 3}
 --- !u!65 &7421268971133948550
 BoxCollider:
   m_ObjectHideFlags: 0

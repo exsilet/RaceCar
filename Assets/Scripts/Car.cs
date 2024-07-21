@@ -10,18 +10,13 @@ namespace DefaultNamespace
         private GarageSlot _slot;
         private Selectable _selectable;
         private bool _boosterSpeed = false;
+        private float _speed;
+        
+        public float Speed => _speed;
         public bool BoosterSpeed => _boosterSpeed;
         public CarStaticData CarStaticData => _carStaticData;
         public GarageSlot Slot => _slot;
-
-        
-        public int level
-        {
-            get
-            {
-                return _carStaticData.Level;
-            }
-        }
+        public int Level => _carStaticData.Level;
 
         private void Update()
         {
@@ -45,6 +40,7 @@ namespace DefaultNamespace
         {
             _carStaticData = carStaticData;
             _slot = slot;
+            _speed = carStaticData.Speed;
             _selectable = carSelectable;
         }
     }

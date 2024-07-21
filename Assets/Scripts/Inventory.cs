@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Dreamteck.Splines;
+using Music;
+using SaveData;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,6 +13,9 @@ namespace DefaultNamespace
         [SerializeField] private CarLevelUp _carLevelUp;
         [SerializeField] private SwapNextLevel _nextLevel;
         [SerializeField] private RandomSpawnCar _spawnCar;
+        [SerializeField] private SoundVolume _soundVolume;
+        [SerializeField] private SaveLoadService _saveLoad;
+        [SerializeField] private Spawn _spawner;
         
         private List<Car> _cars = new();
         private int _count = 0;
@@ -22,12 +27,15 @@ namespace DefaultNamespace
 
         private void Start()
         {
+            _maxLevel = _saveLoad.ReadMaxLevelCar();
+            
             foreach (GarageSlot garageSlot in _garageSlots)
             {
                 // garageSlot.gameObject.SetActive(_count < 2);
                 // if (_count < 2)
                 //     _count++;
                 garageSlot.gameObject.SetActive(true);
+                garageSlot.Initialized(_spawner);
             }
         }
 
@@ -112,11 +120,13 @@ namespace DefaultNamespace
             if (_maxLevel < levelCar)
             {
                 _carLevelUp.gameObject.SetActive(true);
+                _soundVolume.NewCarSound();
                 _carLevelUp.SetCarLevel(data);
                 _maxLevel = levelCar;
                 _nextLevel.NextCar(data);
                 NewSlot();
                 _spawnCar.SetLevelCar(_maxLevel);
+                _saveLoad.SaveMaxLevelCar(_maxLevel);
             }
         }
 

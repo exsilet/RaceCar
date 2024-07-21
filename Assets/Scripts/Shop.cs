@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Music;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -11,6 +12,7 @@ namespace DefaultNamespace
         [SerializeField] private PlayerMoney _money;
         [SerializeField] private CarView _carView;
         [SerializeField] private List<CarStaticData> _carStatic;
+        [SerializeField] private SoundVolume _sound;
 
         private int _levelCar = 1;
         private int _maxLevelCar;
@@ -64,6 +66,7 @@ namespace DefaultNamespace
             if (_currentMoney >= view.PriceValue)
             {
                 _money.BuyCar(view.PriceValue);
+                _sound.ShopCarSound();
                 _spawn.SpawnCar(data.Level, _slot);
                     
                 if (_maxLevelCar >= _currentLevelCar)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Music;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -7,6 +8,7 @@ namespace DefaultNamespace
     {
         [SerializeField] private LayerMask _layerMask;
         [SerializeField] private Spawn _spawn;
+        [SerializeField] private SoundVolume _sound;
 
         private Camera _camera;
         private RaycastHit _currentHit;
@@ -91,8 +93,9 @@ namespace DefaultNamespace
                     {
                         Car car = select.GetComponent<Car>();
                         
-                        if (car.level == _selectedObject.GetComponent<Car>().CarStaticData.Level)
+                        if (car.Level == _selectedObject.GetComponent<Car>().CarStaticData.Level)
                         {
+                            _sound.CrossingCarSound();
                             NewCarLevel(car);
                         }
                     }
@@ -104,7 +107,7 @@ namespace DefaultNamespace
 
         private void NewCarLevel(Car car)
         {
-            _nextLevel = car.level;
+            _nextLevel = car.Level;
             _nextLevel++;
             _selectGarageSlot = car.transform.parent.GetComponent<GarageSlot>();
             _spawn.SpawnCar(_nextLevel, _selectGarageSlot);

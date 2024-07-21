@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Music;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -13,6 +14,7 @@ namespace DefaultNamespace
         [SerializeField] private CarView _carView;
         [SerializeField] private List<CarStaticData> _carStatic;
         [SerializeField] private List<CarViewShop> _viewShopsPrefabs;
+        [SerializeField] private SoundVolume _sound;
 
         private readonly int _defaultMinionsCount = 1;
         private GarageSlot _slot;
@@ -75,6 +77,7 @@ namespace DefaultNamespace
             {
                 _money.BuyCar(view.PriceValue);
                 _spawn.SpawnCar(view.CarLevel, _slot);
+                _sound.ShopCarSound();
 
                 if (_maxLevelCar >= _currentLevelCar)
                 {
