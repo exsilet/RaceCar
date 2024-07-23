@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using Cars;
 using Music;
+using UI;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -26,22 +28,13 @@ namespace DefaultNamespace
         {
             foreach (CarStaticData data in _carStatic)
             {
-                if (_levelCar == data.Level)
-                {
-                    _carView.SetItem(data);
-                }
+                if (_levelCar == data.Level) 
+                    _carView.Initialize(data);
             }
         }
 
-        private void OnEnable()
-        {
-            _carView.SellButtonClick += ByuCar;
-        }
-
-        private void OnDisable()
-        {
-            _carView.SellButtonClick -= ByuCar;
-        }
+        private void OnEnable() => _carView.SellButtonClick += ByuCar;
+        private void OnDisable() => _carView.SellButtonClick -= ByuCar;
 
         private void ByuCar(CarStaticData data, CarView view)
         {

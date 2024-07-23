@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Music;
+﻿using Music;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -87,8 +86,6 @@ namespace DefaultNamespace
             {
                 if (Physics.Raycast(TouchRay, out var hit))
                 {
-                    Debug.Log("hit: " + hit.collider.name);
-
                     if (hit.collider.TryGetComponent(out Selectable select))
                     {
                         Car car = select.GetComponent<Car>();

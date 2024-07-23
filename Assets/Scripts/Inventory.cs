@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cars;
 using Dreamteck.Splines;
 using Music;
 using SaveData;
@@ -22,12 +23,15 @@ namespace DefaultNamespace
         private GarageSlot _position;
         private int _randomSlot;
         private int _maxLevel = 1;
+        private int _nextLevelCar;
         
         public int CurrentMaxLevel => _maxLevel;
-
+        public int NextLevelCar => _nextLevelCar;
+        
         private void Start()
         {
             _maxLevel = _saveLoad.ReadMaxLevelCar();
+            _nextLevelCar = _saveLoad.ReadOpenLevelCar();
             
             foreach (GarageSlot garageSlot in _garageSlots)
             {
@@ -61,14 +65,8 @@ namespace DefaultNamespace
 
             for (int i = 0; i <= _garageSlots.Count; i++)
             {
-                Debug.Log(" i " + i);
-
                 if (!_garageSlots[i].InTheGarage)
-                {
-                    Debug.Log(" slot " + _garageSlots[i]);
-                    
                     return _garageSlots[i];
-                }
             }
 
             return null;
@@ -127,6 +125,7 @@ namespace DefaultNamespace
                 NewSlot();
                 _spawnCar.SetLevelCar(_maxLevel);
                 _saveLoad.SaveMaxLevelCar(_maxLevel);
+                _nextLevelCar = _nextLevel.NextLevel;
             }
         }
 

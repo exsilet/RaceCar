@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using UIExtensions;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 namespace DefaultNamespace
 {
@@ -18,12 +15,7 @@ namespace DefaultNamespace
         private bool _isCoolingDown = false;
         private float _boostDurationMax = 30.0f;
         public float _speedMultiplier = 2.0f;
-
-        // private void Start()
-        // {
-        //     _button.Add(Booster);
-        // }
-
+        
         private void Update()
         {
             if (!_isCoolingDown && _isBoosted)
@@ -42,8 +34,6 @@ namespace DefaultNamespace
 
         public void Booster()
         {
-            //добавить рекламу
-
             if (!_isBoosted && !_isCoolingDown)
             {
                 _isBoosted = true;

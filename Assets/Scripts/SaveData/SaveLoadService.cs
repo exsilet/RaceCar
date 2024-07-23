@@ -28,6 +28,10 @@ namespace SaveData
         public void SaveMaxLevelCar(int maxLevelCar) => _dataBase.MaxLevelCar = maxLevelCar;
 
         public int ReadMaxLevelCar() => _dataBase.MaxLevelCar;
+        
+        public void SaveOpenLevelCar(int openLevelCar) => _dataBase.OpenCarCount = openLevelCar;
+
+        public int ReadOpenLevelCar() => _dataBase.OpenCarCount;
 
         public void SaveGarageSlotData(GarageSlot slot)
         {
@@ -44,6 +48,17 @@ namespace SaveData
         public int ReadCar(GarageSlot slot)
         {
             return _dataBase.ReadCar(slot);
+        }
+
+        public void SavePriceCar(string nameSlot, int priceCar)
+        {
+            _dataBase.AddPriceCar(nameSlot, priceCar);
+            Save();
+        }
+
+        public int ReadPriceCar(string nameSlot)
+        {
+            return _dataBase.ReadPriceSlot(nameSlot);
         }
 
         private void Save()
