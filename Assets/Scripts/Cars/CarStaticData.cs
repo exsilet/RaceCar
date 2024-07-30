@@ -11,6 +11,6 @@ namespace Cars
         public int Coins;
         
         [Range(0f, 5f)] public float Speed;
-        [Range(0, 30)] public int Level;
+        [Range(0, 50)] public int Level;
     }
 }

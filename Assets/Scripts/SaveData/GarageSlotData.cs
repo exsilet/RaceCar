@@ -5,13 +5,13 @@ namespace SaveData
     [Serializable]
     public class GarageSlotData
     {
-        public string NameSlot;
+        public int SlotNumber;
         public int CarLevel;
         public bool IsGarage;
         
-        public GarageSlotData(string nameSlot, int carLevel, bool isGarage)
+        public GarageSlotData(int slotNumber, int carLevel, bool isGarage)
         {
-            NameSlot = nameSlot;
+            SlotNumber = slotNumber;
             CarLevel = carLevel;
             IsGarage = isGarage;
         }

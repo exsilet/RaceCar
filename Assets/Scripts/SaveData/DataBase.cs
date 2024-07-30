@@ -7,17 +7,16 @@ namespace SaveData
     [Serializable]
     public class DataBase
     {
-        public int AllMoney;
+        public long AllMoney;
         public int MaxLevelCar;
         public int OpenCarCount;
         
         public List<GarageSlotData> GaragesSlotData = new();
-        public List<CarObject> CarObjectsGarageSlot = new();
         public List<PriceCar> PriceCars = new();
         
         public DataBase()
         {
-            AllMoney = 6000;
+            AllMoney = 60;
             MaxLevelCar = 1;
             OpenCarCount = 1;
         }
@@ -26,69 +25,53 @@ namespace SaveData
         {
             foreach (var data in GaragesSlotData)
             {
-                if (data.NameSlot == slot.name)
+                if (data.SlotNumber == slot.SlotNumber)
                 {
-                    data.NameSlot = slot.name;
+                    data.SlotNumber = slot.SlotNumber;
                     data.CarLevel = slot.CarLevel;
                     data.IsGarage = slot.InTheGarage;
                     return;
                 }
             }
             
-            GaragesSlotData.Add(new GarageSlotData(slot.name, slot.CarLevel, slot.InTheGarage));
+            GaragesSlotData.Add(new GarageSlotData(slot.SlotNumber, slot.CarLevel, slot.InTheGarage));
         }
 
-        public void AddPriceCar(string nameSlot, int price)
+        public int ReadCar(GarageSlot slot)
         {
-            foreach (PriceCar car in PriceCars)
+            foreach (var data in GaragesSlotData)
             {
-                if (car.NameSlot == nameSlot)
+                if (data.SlotNumber == slot.SlotNumber)
                 {
-                    car.NameSlot = nameSlot;
-                    car.CurrentPrise = price;
-                    return;
-                }
-            }
-            
-            PriceCars.Add(new PriceCar(nameSlot, price));
-        }
-
-        public void AddSaveCar(Car car)
-        {
-            foreach (var data in CarObjectsGarageSlot)
-            {
-                if (data.NameSlot == car.Slot.name)
-                {
-                    data.NameSlot = car.Slot.name;
-                    data.Level = car.Level;
-                    data.Speed = car.Speed;
-                    return;
-                }
-            }
-            
-            CarObjectsGarageSlot.Add(new CarObject(car.Slot.name, car.Speed, car.Level));
-        }
-
-        public int ReadPriceSlot(string nameSlot)
-        {
-            foreach (var data in PriceCars)
-            {
-                if (data.NameSlot == nameSlot)
-                {
-                    return data.CurrentPrise;
+                    return data.CarLevel;
                 }
             }
 
             return 0;
         }
 
-        public int ReadCar(GarageSlot slot)
+        public void AddPriceCar(string levelCar, int price)
         {
-            foreach (var data in CarObjectsGarageSlot)
+            foreach (PriceCar car in PriceCars)
             {
-                if (data.NameSlot == slot.name)
+                if (car.LevelCar == levelCar)
                 {
-                    return data.Level;
+                    car.LevelCar = levelCar;
+                    car.CurrentPrise = price;
+                    return;
+                }
+            }
+            
+            PriceCars.Add(new PriceCar(levelCar, price));
+        }
+
+        public int ReadPriceSlot(string levelCar)
+        {
+            foreach (var data in PriceCars)
+            {
+                if (data.LevelCar == levelCar)
+                {
+                    return data.CurrentPrise;
                 }
             }
 

@@ -24,8 +24,10 @@ public class Finished : MonoBehaviour
         SaveCloud();
     }
 
-    private void LoadSaveCloud() => 
+    private void LoadSaveCloud()
+    {
         _score = YandexGame.savesData.Score;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -40,6 +42,7 @@ public class Finished : MonoBehaviour
     private void SaveCloud()
     {
         YandexGame.savesData.Score = _score;
+        YandexGame.NewLeaderboardScores("LeadersForEarnings", _score);
         YandexGame.SaveProgress();
     }
 }

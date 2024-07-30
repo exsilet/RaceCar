@@ -28,6 +28,7 @@ namespace UI
         private int _nextPrice;
         private SaveLoadService _saveLoad;
         private CarStaticData _carStaticData;
+        private float _coefficient = 0.0016f;
         public int PriceValue => _priceValue;
         public int CarLevel => _carLevel;
         public event UnityAction<CarStaticData, CarViewShop> SellShopButtonClick;
@@ -39,7 +40,7 @@ namespace UI
             _saveLoad = saveLoad;
             _iconImage.sprite = carData.UIIcon;
             _currentSpeed.value = carData.Speed;
-            _currentCoin.value = carData.Coins;
+            _currentCoin.value = carData.Coins * _coefficient;
             PriceToCar(carData, price);
         }
 
@@ -71,9 +72,6 @@ namespace UI
 
         private void OpenNewCarView(int carLevel)
         {
-            Debug.Log("car static data" + _carStaticData.Level);
-            Debug.Log("car level " + carLevel);
-            
             if (_carStaticData.Level <= carLevel)
             {
                 _sellButton.gameObject.SetActive(true);

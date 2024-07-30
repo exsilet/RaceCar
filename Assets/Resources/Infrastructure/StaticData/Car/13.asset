@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9615e3c46248ed9fdb0662858a16df, type: 3}
+  m_Name: 13
+  m_EditorClassIdentifier: 
+  UIIcon: {fileID: 21300000, guid: d07db3a7c32ab5b4ea35434a4db28871, type: 3}
+  PrefabSelect: {fileID: 5130354115134413028, guid: df0690357226f1a4a95bd78d4300d5a6, type: 3}
+  PrefabCarOnTheTrack: {fileID: 8974274024174208607, guid: f1aeed1a15cfb214ba4585a1174dc14d, type: 3}
+  StartPrice: 280
+  Coins: 260
+  Speed: 0.39
+  Level: 13
+  <CarType>k__BackingField: 12

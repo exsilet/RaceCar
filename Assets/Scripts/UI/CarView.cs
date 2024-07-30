@@ -1,5 +1,4 @@
-﻿using System;
-using Cars;
+﻿using Cars;
 using SaveData;
 using TMPro;
 using UIExtensions;
@@ -22,6 +21,9 @@ namespace UI
         private int _priceValue;
         private int _carLevel;
         private int _currentPrice;
+        private int _coefficient = 1000000;
+        private string _drop = "K";
+        private int _currentMoney;
 
         public int CurrentPrice => _currentPrice;
         public int PriceValue => _priceValue;
@@ -43,19 +45,18 @@ namespace UI
         private void OnEnable() => _sellButton.Add(OnButtonClick);
         private void OnDisable() => _sellButton.Remove(OnButtonClick);
         private void OnButtonClick() => SellButtonClick?.Invoke(_item, this);
-        private void OnDestroy() => SaveCurrentPrice();
 
         public void SetPrice()
         {
             if (_priceValue == 0)
             {
-                _price.text = _priceValue.ToString();
+                MoneyCount(_priceValue);
             }
             else
             {
                 _priceValue = (int)(_priceValue * _count);
                 _currentPrice = _priceValue;
-                _price.text = _priceValue.ToString();
+                MoneyCount(_priceValue);
                 SaveCurrentPrice();
             }
         }
@@ -72,7 +73,8 @@ namespace UI
             }
             else
             {
-                _price.text = _priceValue.ToString();
+                MoneyCount(_priceValue);
+                //_price.text = _priceValue.ToString();
             }
         }
 
@@ -81,13 +83,20 @@ namespace UI
             var carLevel = _carLevel.ToString();
             _saveLoad.SavePriceCar(carLevel, _priceValue);
         }
-
-        private void SavePrice()
+        
+        private void MoneyCount(int money)
         {
-            if (_carLevel-1 > 0)
+            if (money > _coefficient)
             {
-                string carLevel = (_carLevel - 1).ToString();
-                _saveLoad.SavePriceCar(carLevel, _currentPrice);
+                _currentMoney = (int) (money / _coefficient);
+                
+                _price.text  = $"{_currentMoney}{_drop}";
+                
+                _price.text = money.ToString();
+            }
+            else
+            {
+                _price.text = money.ToString();
             }
         }
     }

@@ -6,11 +6,11 @@ namespace DefaultNamespace
 {
     public class PlayerMoney : MonoBehaviour
     {
-        [SerializeField] private int _money;
+        [SerializeField] private long _money;
         [SerializeField] private SaveLoadService _saveLoad;
         
-        public int Money => _money;
-        public event UnityAction<int> CurrentMoneyChanged;
+        public long Money => _money;
+        public event UnityAction<long> CurrentMoneyChanged;
         
         private void Start()
         {
@@ -18,14 +18,12 @@ namespace DefaultNamespace
             CurrentMoneyChanged?.Invoke(_money);
         }
 
-        private void OnDestroy() => 
-            _saveLoad.SaveMoney(_money);
-
         public void BuyCar(int buyCar)
         {
             if (_money >= buyCar)
             {
                 _money -= buyCar;
+                _saveLoad.SaveMoney(_money);
                 CurrentMoneyChanged?.Invoke(_money);
             }
         }
@@ -34,6 +32,7 @@ namespace DefaultNamespace
         {
             _money += money;
             CurrentMoneyChanged?.Invoke(_money);
+            _saveLoad.SaveMoney(_money);
         }
     }
 }

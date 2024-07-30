@@ -5,12 +5,12 @@ namespace SaveData
     [Serializable]
     public class PriceCar
     {
-        public string NameSlot;
+        public string LevelCar;
         public int CurrentPrise;
         
-        public PriceCar(string nameSlot, int currentPrise)
+        public PriceCar(string levelCar, int currentPrise)
         {
-            NameSlot = nameSlot;
+            LevelCar = levelCar;
             CurrentPrise = currentPrise;
         }
     }

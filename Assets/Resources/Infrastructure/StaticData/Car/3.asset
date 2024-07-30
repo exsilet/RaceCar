@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9615e3c46248ed9fdb0662858a16df, type: 3}
   m_Name: 3
   m_EditorClassIdentifier: 
-  UIIcon: {fileID: 21300000, guid: 898271a7d6d143246bef87780fc3be20, type: 3}
-  PrefabSelect: {fileID: 5802682960531671290, guid: 867b45ca1e10620488cecc1c0b393780, type: 3}
-  PrefabCarOnTheTrack: {fileID: 191907781150764352, guid: 899ea0eed1036984ab790103a3bc6585, type: 3}
+  UIIcon: {fileID: 21300000, guid: d21c7dd4c2903624b974b3a4098c8e08, type: 3}
+  PrefabSelect: {fileID: 7380627895066304027, guid: e7c5544d50d6ce54dbf1cc9b75cec84d, type: 3}
+  PrefabCarOnTheTrack: {fileID: 9007103197673522648, guid: 66a4a52d6c3b76d43af52a9bc2130586, type: 3}
   StartPrice: 80
   Coins: 60
   Speed: 0.09

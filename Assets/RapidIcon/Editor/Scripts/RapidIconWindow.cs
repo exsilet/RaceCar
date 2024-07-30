@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
-using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
-using System.Threading;
-using System.Diagnostics.SymbolStore;
+using RapidIcon.Editor.Scripts;
 
 namespace RapidIconUIC
 {

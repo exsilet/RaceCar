@@ -12,42 +12,38 @@ namespace DefaultNamespace
 
         private Spawn _spawn;
         private bool _inTheGarage;
-        private GameObject _currentGarage;
         private Car _currentCar;
         private int _carLevel;
+        private int _slotNumber;
         public bool InTheGarage => _inTheGarage;
         public int CarLevel => _carLevel;
+        public int SlotNumber => _slotNumber;
         
         public event UnityAction<GarageSlot> CreateCar;
 
         private void Start()
         {
             LoadSpawnCar();
-            //_inTheGarage = _saveLoad.ReadBusy(name);
         }
 
-        private void OnDestroy()
-        {
-            if (_inTheGarage)
-            {
-                _saveLoad.SaveCar(_currentCar);
-                _saveLoad.SaveGarageSlotData(this);
-            }
-        }
-
-        public void Initialized(Spawn spawn)
+        public void Initialized(Spawn spawn, int slotNumber)
         {
             _spawn = spawn;
+            _slotNumber = slotNumber;
         }
 
         public void NewCar(Car car)
         {
             _currentCar = car;
             _carLevel = car.Level;
+            _saveLoad.SaveGarageSlotData(this);
             CreateCar?.Invoke(this);
         }
 
-        public void IsGarage() => _inTheGarage = !_inTheGarage;
+        public void IsGarage()
+        {
+            _inTheGarage = !_inTheGarage;
+        }
 
         public void DestroyMinions(GameObject selectedObject)
         {

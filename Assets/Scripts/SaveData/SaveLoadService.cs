@@ -21,9 +21,9 @@ namespace SaveData
             Save();
         }
 
-        public void SaveMoney(int money) => _dataBase.AllMoney = money;
+        public void SaveMoney(long money) => _dataBase.AllMoney = money;
 
-        public int ReadMoney() => _dataBase.AllMoney;
+        public long ReadMoney() => _dataBase.AllMoney;
 
         public void SaveMaxLevelCar(int maxLevelCar) => _dataBase.MaxLevelCar = maxLevelCar;
 
@@ -39,12 +39,6 @@ namespace SaveData
             Save();
         }
 
-        public void SaveCar(Car car)
-        {
-            _dataBase.AddSaveCar(car);
-            Save();
-        }
-
         public int ReadCar(GarageSlot slot)
         {
             return _dataBase.ReadCar(slot);
@@ -56,9 +50,9 @@ namespace SaveData
             Save();
         }
 
-        public int ReadPriceCar(string nameSlot)
+        public int ReadPriceCar(string levelCar)
         {
-            return _dataBase.ReadPriceSlot(nameSlot);
+            return _dataBase.ReadPriceSlot(levelCar);
         }
 
         private void Save()

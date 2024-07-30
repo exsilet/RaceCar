@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cars;
 using Music;
+using SaveData;
 using UI;
 using UnityEngine;
 
@@ -15,17 +16,21 @@ namespace DefaultNamespace
         [SerializeField] private CarView _carView;
         [SerializeField] private List<CarStaticData> _carStatic;
         [SerializeField] private SoundVolume _sound;
+        [SerializeField] private SaveLoadService _saveLoad;
 
         private int _levelCar = 1;
         private int _maxLevelCar;
         private int _currentLevelCar = 2;
         private int _countNextLevel = 5;
         private GarageSlot _slot;
-        private int _currentMoney;
+        private long _currentMoney;
         private bool _nextLevelCar = true;
 
         private void Start()
         {
+            _levelCar = _saveLoad.ReadOpenLevelCar();
+            _maxLevelCar = _saveLoad.ReadMaxLevelCar();
+            
             foreach (CarStaticData data in _carStatic)
             {
                 if (_levelCar == data.Level) 

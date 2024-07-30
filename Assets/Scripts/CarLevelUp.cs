@@ -10,11 +10,13 @@ namespace DefaultNamespace
         [SerializeField] private Slider _currentSpeed;
         [SerializeField] private Slider _currentCoin;
         
+        private float _coefficient = 0.0016f;
+        
         public void SetCarLevel(CarStaticData carStaticData)
         {
             _icon.sprite = carStaticData.UIIcon;
-            _currentSpeed.maxValue = carStaticData.Speed;
-            _currentCoin.maxValue = carStaticData.Coins;
+            _currentSpeed.value = carStaticData.Speed;
+            _currentCoin.value = carStaticData.Coins * _coefficient;
         }
     }
 }

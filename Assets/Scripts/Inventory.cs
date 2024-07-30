@@ -33,13 +33,17 @@ namespace DefaultNamespace
             _maxLevel = _saveLoad.ReadMaxLevelCar();
             _nextLevelCar = _saveLoad.ReadOpenLevelCar();
             
-            foreach (GarageSlot garageSlot in _garageSlots)
+            // foreach (GarageSlot garageSlot in _garageSlots)
+            // {
+            //     // garageSlot.gameObject.SetActive(_count < 2);
+            //     // if (_count < 2)
+            //     //     _count++;
+            // }
+
+            foreach (var slot in _garageSlots)
             {
-                // garageSlot.gameObject.SetActive(_count < 2);
-                // if (_count < 2)
-                //     _count++;
-                garageSlot.gameObject.SetActive(true);
-                garageSlot.Initialized(_spawner);
+                slot.gameObject.SetActive(true);
+                slot.Initialized(_spawner, slot.GetHashCode());
             }
         }
 
@@ -65,6 +69,9 @@ namespace DefaultNamespace
 
             for (int i = 0; i <= _garageSlots.Count; i++)
             {
+                if (i > _garageSlots.Count )
+                    return null;
+                
                 if (!_garageSlots[i].InTheGarage)
                     return _garageSlots[i];
             }
@@ -122,7 +129,6 @@ namespace DefaultNamespace
                 _carLevelUp.SetCarLevel(data);
                 _maxLevel = levelCar;
                 _nextLevel.NextCar(data);
-                NewSlot();
                 _spawnCar.SetLevelCar(_maxLevel);
                 _saveLoad.SaveMaxLevelCar(_maxLevel);
                 _nextLevelCar = _nextLevel.NextLevel;

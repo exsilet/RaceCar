@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a9615e3c46248ed9fdb0662858a16df, type: 3}
   m_Name: 6
   m_EditorClassIdentifier: 
-  UIIcon: {fileID: 21300000, guid: c268a07c6024e6f439147f7c9aa6b86c, type: 3}
-  PrefabSelect: {fileID: 803275680498097661, guid: a041129f2cc094c4fa272b17486eab2c, type: 3}
-  PrefabCarOnTheTrack: {fileID: 9003366025744490274, guid: 1c09fb8ba2cfc7a4cb9560c6e799b9f7, type: 3}
+  UIIcon: {fileID: 21300000, guid: e5e3bf71ed617294a9576b40859f70bf, type: 3}
+  PrefabSelect: {fileID: 71532797347469699, guid: 68e923ac9ab1afd4ab30f8352689d518, type: 3}
+  PrefabCarOnTheTrack: {fileID: 5964765387092879277, guid: 73a461902e70b0d4ca4d6ec38a4dcce5, type: 3}
   StartPrice: 140
   Coins: 120
-  Speed: 0.14
+  Speed: 0.18
   Level: 6
   <CarType>k__BackingField: 5

@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using RapidIconUIC;
 using UnityEditor;
-using System.IO;
+using UnityEngine;
 
-namespace RapidIconUIC
+namespace RapidIcon.Editor.Scripts
 {
 	public enum SeparatorTypes { Vertical, Horizontal };
 

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using RapidIconUIC;
 using UnityEditor;
-using System.IO;
-using UnityEditor.Animations;
-using System.Threading;
+using UnityEngine;
 
-namespace RapidIconUIC
+namespace RapidIcon.Editor.Scripts
 {
 	static class Utils
 	{

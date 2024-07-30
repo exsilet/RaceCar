@@ -8,6 +8,7 @@ using System.IO;
 using UnityEngine.Rendering;
 using UnityEditor.UIElements;
 using System.Xml;
+using RapidIcon.Editor.Scripts;
 
 namespace RapidIconUIC
 {
