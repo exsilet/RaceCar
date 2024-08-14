@@ -58,7 +58,10 @@ namespace YG
 
 #if YG_TEXT_MESH_PRO
             if (textMP.rank && data.rank != null) textMP.rank.text = data.rank.ToString();
-            if (textMP.name && data.name != null) textMP.name.text = data.name;
+            if (textMP.name && data.name != null)
+            {
+                textMP.name.text = data.name;
+            }
             if (textMP.score && data.score != null) textMP.score.text = data.score.ToString();
 #endif
             if (imageLoad)
