@@ -1,8 +1,5 @@
-<img width="1080" height="1920" alt="image" src="https://github.com/user-attachments/assets/11977fde-49da-463c-99da-f12160c227aa" />RaceCar (Авто Мастер) 🏁
+RaceCar (Авто Мастер) 🏁
 RaceCar — это увлекательная мобильная/веб-игра в жанре "кликер" с механикой слияния (merge). Собирайте коллекцию автомобилей, улучшайте их, объединяя одинаковые модели, и участвуйте в гонках за ресурсами.
-
-https://img.shields.io/badge/Unity-2022.3+-blueviolet
-https://img.shields.io/badge/Platform-Web%2520%257C%2520Mobile-lightgrey
 
 🎮 Геймплей
 Игровой процесс строится вокруг трёх основных механик:
