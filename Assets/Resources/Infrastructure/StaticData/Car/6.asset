@@ -15,8 +15,8 @@ MonoBehaviour:
   UIIcon: {fileID: 21300000, guid: e5e3bf71ed617294a9576b40859f70bf, type: 3}
   PrefabSelect: {fileID: 71532797347469699, guid: 68e923ac9ab1afd4ab30f8352689d518, type: 3}
   PrefabCarOnTheTrack: {fileID: 5964765387092879277, guid: 73a461902e70b0d4ca4d6ec38a4dcce5, type: 3}
-  StartPrice: 140
-  Coins: 120
+  StartPrice: 700
+  Coins: 320
   Speed: 0.18
   Level: 6
   <CarType>k__BackingField: 5

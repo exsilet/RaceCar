@@ -10,25 +10,20 @@ public class Finished : MonoBehaviour
 
     private void Start()
     {
-        if (YandexGame.SDKEnabled == true)
-        {
+        if (YG2.isSDKEnabled)
             LoadSaveCloud();
-        }
     }
         
-    private void OnEnable() => YandexGame.GetDataEvent += LoadSaveCloud;
-    private void OnDisable() => YandexGame.GetDataEvent -= LoadSaveCloud;
-
-    private void OnDestroy()
-    {
-        SaveCloud();
-    }
-
+    private void OnEnable()  => YG2.onGetSDKData += LoadSaveCloud;
+    private void OnDisable() => YG2.onGetSDKData -= LoadSaveCloud;
+ 
+    private void OnDestroy() => SaveCloud();
+ 
     private void LoadSaveCloud()
     {
-        _score = YandexGame.savesData.Score;
+        _score = YG2.saves.Score;
     }
-
+ 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Car car))
@@ -38,11 +33,11 @@ public class Finished : MonoBehaviour
             SaveCloud();
         }
     }
-
+ 
     private void SaveCloud()
     {
-        YandexGame.savesData.Score = _score;
-        YandexGame.NewLeaderboardScores("LeadersForEarnings", _score);
-        YandexGame.SaveProgress();
+        YG2.SetLeaderboard("LeadersForEarnings", _score);
+        YG2.saves.Score = _score;
+        YG2.SaveProgress();
     }
 }

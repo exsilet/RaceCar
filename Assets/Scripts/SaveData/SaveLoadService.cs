@@ -6,7 +6,7 @@ namespace SaveData
     public class SaveLoadService : MonoBehaviour
     {
         private const string ProgressKey = "Progress";
-        
+
         private DataBase _dataBase;
 
         private void OnEnable()
@@ -16,22 +16,33 @@ namespace SaveData
                 : new DataBase();
         }
 
-        private void OnDisable()
+        private void OnDisable() => Save();
+        
+        public void SaveMoney(long money) => _dataBase.AllMoney = money;
+        public long ReadMoney() => _dataBase.AllMoney;
+        
+        public void SaveMaxLevelCar(int level) => _dataBase.MaxLevelCar = level;
+        public int ReadMaxLevelCar() => _dataBase.MaxLevelCar;
+        public void SaveOpenLevelCar(int level) => _dataBase.OpenCarCount = level;
+        public int ReadOpenLevelCar() => _dataBase.OpenCarCount;
+
+        public string ReadLastBonusDate() => _dataBase.LastDailyBonusDate;
+        public int ReadBonusDay() => _dataBase.DailyBonusDay;
+
+        public void SaveDailyBonus(string date, int day)
         {
+            _dataBase.LastDailyBonusDate = date;
+            _dataBase.DailyBonusDay = day;
             Save();
         }
 
-        public void SaveMoney(long money) => _dataBase.AllMoney = money;
+        public long ReadLastOnlineTime() => _dataBase.LastOnlineTime;
 
-        public long ReadMoney() => _dataBase.AllMoney;
-
-        public void SaveMaxLevelCar(int maxLevelCar) => _dataBase.MaxLevelCar = maxLevelCar;
-
-        public int ReadMaxLevelCar() => _dataBase.MaxLevelCar;
-        
-        public void SaveOpenLevelCar(int openLevelCar) => _dataBase.OpenCarCount = openLevelCar;
-
-        public int ReadOpenLevelCar() => _dataBase.OpenCarCount;
+        public void SaveLastOnlineTime(long ts)
+        {
+            _dataBase.LastOnlineTime = ts;
+            Save();
+        }
 
         public void SaveGarageSlotData(GarageSlot slot)
         {
@@ -39,10 +50,7 @@ namespace SaveData
             Save();
         }
 
-        public int ReadCar(GarageSlot slot)
-        {
-            return _dataBase.ReadCar(slot);
-        }
+        public int ReadCar(GarageSlot slot) => _dataBase.ReadCar(slot);
 
         public void SavePriceCar(string nameSlot, int priceCar)
         {
@@ -50,10 +58,7 @@ namespace SaveData
             Save();
         }
 
-        public int ReadPriceCar(string levelCar)
-        {
-            return _dataBase.ReadPriceSlot(levelCar);
-        }
+        public int ReadPriceCar(string levelCar) => _dataBase.ReadPriceSlot(levelCar);
 
         private void Save()
         {

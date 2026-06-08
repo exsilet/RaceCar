@@ -21,105 +21,86 @@ namespace DefaultNamespace
         private List<Car> _cars = new();
         private int _count = 0;
         private GarageSlot _position;
-        private int _randomSlot;
         private int _maxLevel = 1;
         private int _nextLevelCar;
-        
+ 
         public int CurrentMaxLevel => _maxLevel;
         public int NextLevelCar => _nextLevelCar;
-        
+        public bool IsFull => GetFreeSlots().Count == 0;
+        public List<GarageSlot> GetSlots() => _garageSlots;
+ 
         private void Start()
         {
             _maxLevel = _saveLoad.ReadMaxLevelCar();
             _nextLevelCar = _saveLoad.ReadOpenLevelCar();
-            
-            // foreach (GarageSlot garageSlot in _garageSlots)
-            // {
-            //     // garageSlot.gameObject.SetActive(_count < 2);
-            //     // if (_count < 2)
-            //     //     _count++;
-            // }
-
+ 
             foreach (var slot in _garageSlots)
             {
                 slot.gameObject.SetActive(true);
                 slot.Initialized(_spawner, slot.GetHashCode());
             }
         }
-
+ 
         private void OnEnable()
         {
             foreach (GarageSlot slot in _garageSlots)
-            {
                 slot.CreateCar += SpawnerOnCreateCar;
-            }
         }
-
+ 
         private void OnDisable()
         {
             foreach (GarageSlot slot in _garageSlots)
-            {
                 slot.CreateCar -= SpawnerOnCreateCar;
-            }
         }
-
+        
         public GarageSlot RandomSlot()
         {
-            _randomSlot = Random.Range(0, _garageSlots.Count);
-
-            for (int i = 0; i <= _garageSlots.Count; i++)
-            {
-                if (i > _garageSlots.Count )
-                    return null;
-                
-                if (!_garageSlots[i].InTheGarage)
-                    return _garageSlots[i];
-            }
-
-            return null;
+            List<GarageSlot> freeSlots = GetFreeSlots();
+ 
+            if (freeSlots.Count == 0)
+                return null;
+ 
+            int randomIndex = Random.Range(0, freeSlots.Count);
+            return freeSlots[randomIndex];
         }
-
+ 
         public void NewCar(Car car)
         {
-            _cars.Add(car);
+            if (car != null)
+                _cars.Add(car);
             
-            for (int i = 0; i < _cars.Count; i++)
-            {
-                if (_cars[i] == null)
-                {
-                    _cars.RemoveAt(i);
-                    _cars.Reverse();
-                }
-            }
+            _cars.RemoveAll(c => c == null);
         }
-
+ 
+        public void RemoveCar(Car car)
+        {
+            _cars.Remove(car);
+            _cars.RemoveAll(c => c == null);
+        }
+ 
         public void CarBooster(float speed)
         {
-            foreach (Car carSpeed in _cars)
+            _cars.RemoveAll(c => c == null);
+            foreach (Car car in _cars)
             {
-                if (carSpeed != null)
-                {
-                    carSpeed.GetComponent<SplineFollower>().followSpeed *= speed;
-                    carSpeed.SetBooster();
-                }
+                car.GetComponent<SplineFollower>().followSpeed *= speed;
+                car.SetBooster();
             }
         }
-
+ 
         public void NormalSpeedCar(float speed)
         {
-            foreach (Car carSpeed in _cars)
+            _cars.RemoveAll(c => c == null);
+            foreach (Car car in _cars)
             {
-                if (carSpeed != null)
+                if (car.BoosterSpeed)
                 {
-                    if (carSpeed.BoosterSpeed)
-                    {
-                        carSpeed.GetComponent<SplineFollower>().followSpeed /= speed;
-                        carSpeed.SetBoosterFalse();
-                    }
+                    car.GetComponent<SplineFollower>().followSpeed /= speed;
+                    car.SetBoosterFalse();
                 }
             }
         }
-
+ 
         public void MaxLevel(int levelCar, CarStaticData data)
         {
             if (_maxLevel < levelCar)
@@ -134,16 +115,18 @@ namespace DefaultNamespace
                 _nextLevelCar = _nextLevel.NextLevel;
             }
         }
-
-        private void NewSlot()
+ 
+        private List<GarageSlot> GetFreeSlots()
         {
-            if (_count <= _garageSlots.Count)
+            List<GarageSlot> free = new();
+            foreach (GarageSlot slot in _garageSlots)
             {
-                _garageSlots[_count].gameObject.SetActive(true);
-                _count++;
+                if (!slot.InTheGarage)
+                    free.Add(slot);
             }
+            return free;
         }
-
+ 
         private void SpawnerOnCreateCar(GarageSlot position)
             => _position = position;
     }

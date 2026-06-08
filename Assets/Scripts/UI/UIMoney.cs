@@ -8,39 +8,42 @@ namespace UI
     {
         [SerializeField] private TMP_Text _moneyText;
         [SerializeField] private PlayerMoney _playerMoney;
-
-        private int _coefficient = 1000000;
-        private string _drop = "K";
-        private int _money;
-        private long _currentMoney;
-        
+ 
         private void Start()
         {
-            _moneyText.text = _playerMoney.Money.ToString();
+            _moneyText.text = FormatMoney(_playerMoney.Money);
         }
-
+ 
         private void OnEnable()
         {
             _playerMoney.CurrentMoneyChanged += CountMoney;
         }
-
+ 
         private void OnDisable()
         {
             _playerMoney.CurrentMoneyChanged -= CountMoney;
         }
-
+ 
         private void CountMoney(long money)
         {
-            if (money > _coefficient)
-            {
-                _currentMoney = (int) (money / _coefficient);
-                
-                _moneyText.text = $"{_currentMoney}{_drop}";
-            }
-            else
-            {
-                _moneyText.text = $"{money}";
-            }
+            _moneyText.text = FormatMoney(money);
+        }
+ 
+        public static string FormatMoney(long money)
+        {
+            if (money >= 1_000_000_000_000L)
+                return $"{money / 1_000_000_000_000.0:0.##}T";
+ 
+            if (money >= 1_000_000_000L)
+                return $"{money / 1_000_000_000.0:0.##}B";
+ 
+            if (money >= 1_000_000L)
+                return $"{money / 1_000_000.0:0.##}M";
+ 
+            if (money >= 1_000L)
+                return $"{money / 1_000.0:0.##}K";
+ 
+            return money.ToString();
         }
     }
 }

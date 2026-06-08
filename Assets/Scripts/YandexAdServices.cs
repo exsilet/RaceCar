@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using YG;
 
@@ -6,57 +7,93 @@ namespace DefaultNamespace
 {
     public class YandexAdServices : MonoBehaviour
     {
-        [SerializeField] private RandomSpawnCar _randomSpawn;
+        [Header("Rewarded")] [SerializeField] private RandomSpawnCar _randomSpawn;
         [SerializeField] private Boost _boost;
-        
+
+        [Header("Interstitial")]
+        [Tooltip("Минимальный интервал между interstitial рекламой (секунды)")]
+        [SerializeField]
+        private float _autoShowInterval = 180f;
+
+        [Tooltip("Задержка перед первым показом после запуска (секунды)")] [SerializeField]
+        private float _firstAdDelay = 60f;
+
         public static Action RewardClosed;
+        public static Action InterstitialClosed;
+
+        private const string RewardBoost = "boost";
+        private const string RewardRandomCar = "random_car";
 
         private void OnEnable()
         {
-            YandexGame.RewardVideoEvent += Rewarded;
-            YandexGame.OpenVideoEvent += OpenVideoReward;
-            YandexGame.CloseVideoEvent += CloseVideoReward;
+            YG2.onRewardAdv += OnReward;
+            YG2.onCloseInterAdv += OnInterstitialClose;
+            YG2.onErrorInterAdv += OnInterstitialError;
         }
 
         private void OnDisable()
         {
-            YandexGame.RewardVideoEvent -= Rewarded;
-            YandexGame.OpenVideoEvent -= OpenVideoReward;
-            YandexGame.CloseVideoEvent -= CloseVideoReward;
+            YG2.onRewardAdv -= OnReward;
+            YG2.onCloseInterAdv -= OnInterstitialClose;
+            YG2.onErrorInterAdv -= OnInterstitialError;
         }
-        
-        private void Rewarded(int id)
+
+        private void Start()
         {
-            switch (id)
+            StartCoroutine(AutoInterstitialLoop());
+        }
+
+        private IEnumerator AutoInterstitialLoop()
+        {
+            yield return new WaitForSecondsRealtime(_firstAdDelay);
+
+            while (true)
             {
-                case 1:
-                    SpeedBooster();
-                    break;
-                case 2:
-                    BoosterRandomCar();
-                    break;
+                ShowInterstitial();
+                yield return new WaitForSecondsRealtime(_autoShowInterval);
             }
         }
 
-        private void OpenVideoReward()
+        public void ShowInterstitial()
         {
-            Time.timeScale = 0;
+            if (YG2.nowAdsShow) return;
+            YG2.InterstitialAdvShow();
         }
 
-        private void CloseVideoReward()
+        private void OnInterstitialClose()
         {
+            InterstitialClosed?.Invoke();
+        }
+
+        private void OnInterstitialError()
+        {
+            Debug.Log("[YandexAdServices] Interstitial error");
+        }
+
+        public void ShowRewardBoost()
+        {
+            if (YG2.nowAdsShow) return;
+            YG2.RewardedAdvShow(RewardBoost, SpeedBooster);
+        }
+
+        public void ShowRewardRandomCar()
+        {
+            if (YG2.nowAdsShow) return;
+            YG2.RewardedAdvShow(RewardRandomCar, BoosterRandomCar);
+        }
+
+        private void OnReward(string id)
+        {
+            switch (id)
+            {
+                case RewardBoost: SpeedBooster(); break;
+                case RewardRandomCar: BoosterRandomCar(); break;
+            }
+
             RewardClosed?.Invoke();
-            Time.timeScale = 1;
         }
 
-        private void SpeedBooster()
-        {
-            _boost.Booster();
-        }
-        
-        private void BoosterRandomCar()
-        {
-            _randomSpawn.SpawnRandomCar();
-        }
+        private void SpeedBooster() => _boost.Booster();
+        private void BoosterRandomCar() => _randomSpawn.SpawnRandomCar();
     }
 }

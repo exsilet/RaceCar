@@ -1,33 +1,27 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 namespace DefaultNamespace
 {
     public class GiftVideoAd : MonoBehaviour
     {
-        [SerializeField] private Button _rewardButton;
+        [SerializeField] private Button _rewardBoostButton;
+        [SerializeField] private YandexAdServices _adServices;
+
+        private void OnEnable()  => YandexAdServices.RewardClosed += OnRewardClosed;
+        private void OnDisable() => YandexAdServices.RewardClosed -= OnRewardClosed;
         
-        private void OnEnable()
-        {
-            YandexAdServices.RewardClosed += RewardClosed;
-        }
-
-        private void OnDisable()
-        {
-            YandexAdServices.RewardClosed -= RewardClosed;
-        }
-
         public void WatchVideoAd(int id)
         {
-            //SoundManager.Click();
-            YandexGame.RewVideoShow(id);
-            _rewardButton.interactable = false;
+            _rewardBoostButton.interactable = false;
+ 
+            switch (id)
+            {
+                case 1: _adServices.ShowRewardBoost();     break;
+                case 2: _adServices.ShowRewardRandomCar(); break;
+            }
         }
-
-        private void RewardClosed()
-        {
-            _rewardButton.interactable = true;
-        }
+ 
+        private void OnRewardClosed() => _rewardBoostButton.interactable = true;
     }
 }

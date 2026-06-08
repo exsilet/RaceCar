@@ -3,19 +3,18 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using YG;
 
+//using YG;
+
 namespace DefaultNamespace
 {
     public class DropdownLanguage : MonoBehaviour
     {
-        [SerializeField] private InfoYG _infoYG;
         [SerializeField] private Dropdown _dropdown;
         [SerializeField] private Text _labelText;
         [SerializeField] private Text _itemText;
         
-        
-        [FormerlySerializedAs("ru")]
-        [Header("Translate")]
-        [SerializeField] private string[] _Ru = new string[3];
+        [Header("Переводы для каждого языка (3 элемента: пункты дропдауна)")]
+        [FormerlySerializedAs("ru")] [SerializeField] private string[] _Ru = new string[3];
         [FormerlySerializedAs("en")] [SerializeField] private string[] _En = new string[3];
         [FormerlySerializedAs("tr")] [SerializeField] private string[] _Tr = new string[3];
         
@@ -25,57 +24,50 @@ namespace DefaultNamespace
         
         private void OnEnable()
         {
-            //YandexGame.SwitchLangEvent += SwitchLanguage;
-            
-            switch (YandexGame.lang)
+            switch (YG2.lang)
             {
                 case "en":
                     _dropdown.value = 0;
-                    SwithLanguage(_En, _dropdown.value);
+                    ApplyLanguage(_En, 0);
                     break;
                 case "ru":
                     _dropdown.value = 1;
-                    SwithLanguage(_Ru, _dropdown.value);
+                    ApplyLanguage(_Ru, 1);
                     break;
                 case "tr":
                     _dropdown.value = 2;
-                    SwithLanguage(_Tr, _dropdown.value);
+                    ApplyLanguage(_Tr, 2);
+                    break;
+                default:
+                    _dropdown.value = 1;
+                    ApplyLanguage(_Ru, 1);
                     break;
             }
-        }
-
-        private void SwithLanguage(string [] language, int index)
-        {
-            //SwithFont(_infoYG.fonts.tr);
-            for (int i = 0; i < language.Length; i++)
-                _dropdown.options[i].text = language[i];
-
-            _labelText.text = _dropdown.options[index].text;
         }
 
         public void InputLanguage(int value)
         {
+            string[] lang;
+            string langCode;
+ 
             switch (value)
             {
-                case 0:
-                    YandexGame.SwitchLangEvent("en");
-                    YandexGame.lang = "en";
-                    YandexGame.savesData.language = "en";
-                    SwithLanguage(_En, value);
-                    break;
-                case 1:
-                    YandexGame.SwitchLangEvent("ru");
-                    YandexGame.lang = "ru";
-                    YandexGame.savesData.language = "ru";
-                    SwithLanguage(_Ru, value);
-                    break;
-                case 2:
-                    YandexGame.SwitchLangEvent("tr");
-                    YandexGame.lang = "tr";
-                    YandexGame.savesData.language = "tr";
-                    SwithLanguage(_Tr, value);
-                    break;
+                case 0:  lang = _En; langCode = "en"; break;
+                case 2:  lang = _Tr; langCode = "tr"; break;
+                default: lang = _Ru; langCode = "ru"; break;
             }
+            
+            YG2.SwitchLanguage(langCode);
+            ApplyLanguage(lang, value);
+        }
+ 
+        private void ApplyLanguage(string[] language, int index)
+        {
+            for (int i = 0; i < language.Length && i < _dropdown.options.Count; i++)
+                _dropdown.options[i].text = language[i];
+ 
+            _labelText.text = _dropdown.options[index].text;
+            _dropdown.RefreshShownValue();
         }
     }
 }

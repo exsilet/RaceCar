@@ -10,17 +10,22 @@ namespace SaveData
         public long AllMoney;
         public int MaxLevelCar;
         public int OpenCarCount;
-        
+
+        public string LastDailyBonusDate = "";
+        public int DailyBonusDay = 0;
+
+        public long LastOnlineTime = 0;
+
         public List<GarageSlotData> GaragesSlotData = new();
         public List<PriceCar> PriceCars = new();
-        
+
         public DataBase()
         {
-            AllMoney = 60;
+            AllMoney = 150;
             MaxLevelCar = 1;
             OpenCarCount = 1;
         }
-        
+
         public void AddGarageSlot(GarageSlot slot)
         {
             foreach (var data in GaragesSlotData)
@@ -33,7 +38,7 @@ namespace SaveData
                     return;
                 }
             }
-            
+
             GaragesSlotData.Add(new GarageSlotData(slot.SlotNumber, slot.CarLevel, slot.InTheGarage));
         }
 
@@ -61,7 +66,7 @@ namespace SaveData
                     return;
                 }
             }
-            
+
             PriceCars.Add(new PriceCar(levelCar, price));
         }
 
